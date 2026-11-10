@@ -9,7 +9,7 @@ description = "Reflection-free 3D reconstruction from driving video"
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.9"
-dependencies = ["numpy", "pillow", "torch"]
+dependencies = ["numpy", "pillow", "scipy", "torch"]
 
 [project.optional-dependencies]
 test = ["pytest"]
