@@ -55,5 +55,5 @@ def test_weight_keeps_r_out_of_reflection_free_pixels(tmp_path):
     with torch.no_grad():
         m.R.copy_(R)
     T = torch.zeros(3, 64, 96)
-    pred = m.predict(T)
+    pred = m.predict(T).detach()
     assert float(pred[:, 0:5, 0:5].abs().max()) < 1e-3 < float(pred[:, 25:35, 40:50].abs().max())

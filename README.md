@@ -25,8 +25,11 @@ Under active development. Planned contents:
 ## Layout
 
 ```
-src/ridesplat/   library code (model, reflection layer, training, evaluation)
-tests/           unit tests (pytest)
+src/ridesplat/
+  data/      train/held-out split: frames named eval_* are held out
+  models/    the shared signed reflection layer and its self-localization weight
+  eval/      PSNR, SSIM and LPIPS of held-out renders against reflection-free targets
+tests/       unit tests (pytest)
 ```
 
 ## Development
@@ -34,6 +37,12 @@ tests/           unit tests (pytest)
 ```
 pip install -e .
 pytest
+```
+
+Score a folder of held-out renders against clean targets with the same file names:
+
+```
+python -m ridesplat.eval.metrics --pred <renders> --gt <targets> --out metrics.json
 ```
 
 ## License

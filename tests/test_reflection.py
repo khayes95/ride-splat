@@ -30,7 +30,7 @@ def test_penalty_is_mean_l1():
     m = model(l1=0.01)
     with torch.no_grad():
         m.R.fill_(-0.5)
-    assert math.isclose(float(m.penalty()), 0.01 * 0.5, rel_tol=1e-6)
+    assert math.isclose(float(m.penalty().detach()), 0.01 * 0.5, rel_tol=1e-6)
 
 
 def test_step_moves_r_toward_the_residual():
@@ -38,7 +38,7 @@ def test_step_moves_r_toward_the_residual():
     T = torch.full((3, H, W), 0.2)
     ((m.predict(T) - 0.5) ** 2).mean().backward()
     m.step()
-    assert float(m.R.min()) > 0          # the frame is brighter than the render, so R grows
+    assert float(m.R.detach().min()) > 0          # the frame is brighter than the render, so R grows
     assert m.R.grad is None
 
 
