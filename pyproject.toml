@@ -13,6 +13,7 @@ dependencies = ["lpips", "numpy", "opencv-python-headless", "pillow", "scikit-im
 
 [project.optional-dependencies]
 test = ["pytest"]
+train = ["joblib", "plyfile", "torchvision", "tqdm"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

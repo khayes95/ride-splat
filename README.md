@@ -26,10 +26,15 @@ Under active development. Planned contents:
 
 ```
 src/ridesplat/
-  data/      train/held-out split: frames named eval_* are held out
-  models/    the shared signed reflection layer and its self-localization weight
-  eval/      PSNR, SSIM and LPIPS of held-out renders against reflection-free targets
-tests/       unit tests (pytest)
+  backbone.py   finds the pinned 3DGS checkout; seeding
+  training.py   RIDE-Splat's training options and the reflection model they configure
+  data/         train/held-out split: frames named eval_* are held out
+  models/       the shared signed reflection layer, attenuation, per-frame appearance, and the
+                self-localization weight
+  eval/         PSNR, SSIM and LPIPS of held-out renders against reflection-free targets
+train.py        one training pass on top of 3D Gaussian Splatting (needs a CUDA GPU)
+scripts/        install_3dgs.sh fetches and builds 3DGS at the pinned commit
+tests/          unit tests (pytest; CPU only)
 ```
 
 ## Development
@@ -37,6 +42,14 @@ tests/       unit tests (pytest)
 ```
 pip install -e .
 pytest
+```
+
+Training needs a CUDA build of PyTorch and the 3DGS extensions:
+
+```
+pip install -e ".[train]"
+bash scripts/install_3dgs.sh
+python train.py -s <scene> -m <output> -r 1 --eval --smoke_test
 ```
 
 Score a folder of held-out renders against clean targets with the same file names:
@@ -47,4 +60,6 @@ python -m ridesplat.eval.metrics --pred <renders> --gt <targets> --out metrics.j
 
 ## License
 
-MIT, see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE), except `train.py`, which is adapted from 3D Gaussian Splatting (Inria
+and MPII) and is under the Gaussian-Splatting License in [LICENSE-3DGS.md](LICENSE-3DGS.md):
+non-commercial research and evaluation use only.
