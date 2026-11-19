@@ -33,6 +33,7 @@ src/ridesplat/
                 self-localization weight
   eval/         PSNR, SSIM and LPIPS of held-out renders against reflection-free targets
 train.py        one training pass on top of 3D Gaussian Splatting (needs a CUDA GPU)
+run_ridesplat.py  the full method on one scene: pass 1, self-localization, pass 2, held-out renders
 scripts/        install_3dgs.sh fetches and builds 3DGS at the pinned commit
 tests/          unit tests (pytest; CPU only)
 ```
@@ -51,6 +52,15 @@ pip install -e ".[train]"
 bash scripts/install_3dgs.sh
 python train.py -s <scene> -m <output> -r 1 --eval --smoke_test
 ```
+
+The full method on one COLMAP scene whose held-out frames are named `eval_*`:
+
+```
+python run_ridesplat.py -s <scene> -m output/<scene> --gt <scene>/eval
+```
+
+This writes pass 1, the self-localization weight, pass 2, the held-out renders and `metrics.json`
+under `-m`. Rerunning the same command resumes after the last finished step.
 
 Score a folder of held-out renders against clean targets with the same file names:
 
