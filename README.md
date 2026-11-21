@@ -28,7 +28,8 @@ Under active development. Planned contents:
 src/ridesplat/
   backbone.py   finds the pinned 3DGS checkout; seeding
   training.py   RIDE-Splat's training options and the reflection model they configure
-  data/         train/held-out split: frames named eval_* are held out
+  data/         train/held-out split (frames named eval_* are held out); dataset download and
+                scene preparation
   models/       the shared signed reflection layer, attenuation, per-frame appearance, and the
                 self-localization weight
   eval/         PSNR, SSIM and LPIPS of held-out renders against reflection-free targets
@@ -53,10 +54,17 @@ bash scripts/install_3dgs.sh
 python train.py -s <scene> -m <output> -r 1 --eval --smoke_test
 ```
 
+Download the RIDE-Splat Dataset (676 MB, CC BY 4.0) and link each scene's frames into the single
+`images/` folder 3DGS reads:
+
+```
+python -m ridesplat.data.prepare --root data/ride-splat-dataset --download
+```
+
 The full method on one COLMAP scene whose held-out frames are named `eval_*`:
 
 ```
-python run_ridesplat.py -s <scene> -m output/<scene> --gt <scene>/eval
+python run_ridesplat.py -s data/ride-splat-dataset/rs2 -m output/rs2 --gt data/ride-splat-dataset/rs2/eval
 ```
 
 This writes pass 1, the self-localization weight, pass 2, the held-out renders and `metrics.json`
